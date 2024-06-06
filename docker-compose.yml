@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    container_name: Postgresql_Container
+    container_name: Postgresql_Container1
     image: postgres
     environment:
       POSTGRES_USER: kareem
@@ -15,10 +15,36 @@ services:
     networks:
       - db
     restart: unless-stopped
+  redis:
+    image: "redis:alpine"
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass sOmE_sEcUrE_pAsS
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+# networking for the Redis container
+
+  app:
+    image: kareemalmosafi/testapp:latest # Assuming you have already built and pushed your app image
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/library
+      SPRING_DATASOURCE_USERNAME: kareem
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - "8080:8080"
 
 networks:
   db:
     driver: bridge
-
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
 volumes:
   db:
