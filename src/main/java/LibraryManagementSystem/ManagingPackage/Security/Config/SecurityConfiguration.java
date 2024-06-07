@@ -41,10 +41,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req->
                      req
 
-                             .anyRequest().permitAll()
-                              //.requestMatchers("/api/Auth/**").permitAll()
 
-                            // .anyRequest().authenticated()
+                              .requestMatchers("/api/Auth/**").permitAll()
+
+                            .anyRequest().authenticated()
 
                 )
 

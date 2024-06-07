@@ -25,7 +25,7 @@ public class BookService {
     private final BookRepository bookRepository;
 
 
-   @CachePut("BookCache")
+  // @CachePut("BookCache")
     public List<Book> GetAllBooks() {
         List<Book>Books= bookRepository.findAll();
         if(Books.isEmpty())
@@ -33,7 +33,7 @@ public class BookService {
 
             return Books;
     }
-    @CachePut(value = "BookCache",key = "#id")
+  //  @CachePut(value = "BookCache",key = "#id")
     public Optional<Book> GetOneBook(Integer id) {
        Optional <Book> book = bookRepository.findById(id);
         if (book.isEmpty())
@@ -42,7 +42,7 @@ public class BookService {
               return book;
     }
     @Transactional
-    @CachePut(value = "BookCache")
+   // @CachePut(value = "BookCache")
     public Book AddBook(AddingBookRequest request) {
         AddingBookValidator.validate(request);
         var book =Book.builder()
