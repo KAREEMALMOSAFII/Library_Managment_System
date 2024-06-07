@@ -8,5 +8,5 @@ jobs:
  deploy-app:
   runs-on: ubuntu-latest
   steps:
-  - run: curl ${{secrets_RENDER_LMS_HOOK}}
+  - run: curl ${{RENDER_LMS_HOOK}}
   
