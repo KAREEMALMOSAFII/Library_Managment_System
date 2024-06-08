@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.time.Duration;
 
 @Configuration
-@RequiredArgsConstructor
 @EnableRedisRepositories
 public class RedisConfig
 {
@@ -40,5 +39,14 @@ public class RedisConfig
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(redisCacheConfiguration)
                 .build();
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(RedisSerializer.json());
+        return template;
     }
 }
